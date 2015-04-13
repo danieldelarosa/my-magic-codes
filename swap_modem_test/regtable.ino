@@ -35,12 +35,10 @@ DEFINE_COMMON_REGISTERS()
 /*
  * Definition of custom registers
  */
- 
- static byte dataTest[2];
- REGISTER regDataTest(dataTest,sizeof(dataTest),&updateDataTest,NULL);
- 
- 
 // Your custom registers come here
+
+static byte dataTest[2];
+REGISTER regDataTest(dataTest,sizeof(dataTest),&updateDataTest,NULL);
 
 /**
  * Initialize table of registers
@@ -62,5 +60,4 @@ const void updateDataTest(byte x){
   dataTest[0]='1';
   dataTest[1]='2';
   dataTest[2]='3';
-  swap.getRegister(REGI_DATATEST)->getData();
 }

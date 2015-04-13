@@ -1,5 +1,5 @@
 /**
- * regtable
+ * regtable.h
  *
  * Copyright (c) 2014 panStamp <contact@panstamp.com>
  * 
@@ -24,43 +24,19 @@
  * Creation date: 12/28/2011
  */
 
-#include "product.h"
-#include "regtable.h"
+#ifndef _REGTABLE_H
+#define _REGTABLE_H
+
+#include "Arduino.h"
+#include "register.h"
+#include "commonregs.h"
 
 /**
- * Definition of common registers
+ * Register indexes
  */
-DEFINE_COMMON_REGISTERS()
+DEFINE_REGINDEX_START()
+  REGI_DATATEST // First index here = 11
+DEFINE_REGINDEX_END()
 
-/*
- * Definition of custom registers
- */
- 
- static byte dataTest[2];
- REGISTER regDataTest(dataTest,sizeof(dataTest),&updateDataTest,NULL);
- 
- 
-// Your custom registers come here
+#endif
 
-/**
- * Initialize table of registers
- */
-DECLARE_REGISTERS_START()
-  // Put here pointers to your custom registers
-  &regDataTest,
-DECLARE_REGISTERS_END()
-
-/**
- * Definition of common getter/setter callback functions
- */
-DEFINE_COMMON_CALLBACKS()
-
-/**
- * Definition of custom getter/setter callback functions
- */
-const void updateDataTest(byte x){
-  dataTest[0]='1';
-  dataTest[1]='2';
-  dataTest[2]='3';
-  swap.getRegister(REGI_DATATEST)->getData();
-}

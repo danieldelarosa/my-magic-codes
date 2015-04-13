@@ -10,7 +10,7 @@
 
 // la libreria de panstamp no incluye comunicacion por serial por defecto, aqui la agregamos
 #include "HardwareSerial.h"
-
+#include "swap.h"
 
 // definiendo las variables de comunicacion para la panstamp
 #define RFCHANNEL  0  //canal de comunicacion
@@ -78,8 +78,10 @@ void setup() {
   panstamp.radio.setChannel(RFCHANNEL);  // asignamos el canal de transmision
   panstamp.radio.setSyncWord(SYNCWORD1,SYNCWORD0); // configuramos las palabras clave
   panstamp.radio.setDevAddress(SOURCE_ADDR); // le damos una direccion local al dispositivo
-  //panstamp.radio.setCCregs();  // registramos las credenciales
+  panstamp.radio.setCCregs();  // registramos las credenciales
   panstamp.setHighTxPower(); // aumentamos la potencia de transmision
+  
+  swap.init();
   
   // incicializamos el serial 
   Serial.begin(38400);
@@ -88,7 +90,7 @@ void setup() {
   // avisamos que el moden se encuentra listo
   Serial.println("Receiver is Ready!");
   // desabilitamos el filtro de addres, para que reciba todos los mensajes.
-  panstamp.radio.disableAddressCheck();
+  //panstamp.radio.disableAddressCheck();
   
   // con esta linea agregamos la funcion que se ejectua cada vez que recibimos un mensaje
   panstamp.attachInterrupt(rfPacketReceived);

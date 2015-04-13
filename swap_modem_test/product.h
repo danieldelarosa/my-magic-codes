@@ -1,5 +1,5 @@
 /**
- * regtable
+ * product.h
  *
  * Copyright (c) 2014 panStamp <contact@panstamp.com>
  * 
@@ -24,43 +24,28 @@
  * Creation date: 12/28/2011
  */
 
-#include "product.h"
-#include "regtable.h"
+#ifndef _PRODUCT_H
+#define _PRODUCT_H
 
 /**
- * Definition of common registers
+ * Hardware version
  */
-DEFINE_COMMON_REGISTERS()
-
-/*
- * Definition of custom registers
- */
- 
- static byte dataTest[2];
- REGISTER regDataTest(dataTest,sizeof(dataTest),&updateDataTest,NULL);
- 
- 
-// Your custom registers come here
+#define HARDWARE_VERSION        0x00000000L
 
 /**
- * Initialize table of registers
+ * Firmware version
  */
-DECLARE_REGISTERS_START()
-  // Put here pointers to your custom registers
-  &regDataTest,
-DECLARE_REGISTERS_END()
+#define FIRMWARE_VERSION        0x00000000L
 
 /**
- * Definition of common getter/setter callback functions
+ * Manufacturer SWAP ID
  */
-DEFINE_COMMON_CALLBACKS()
+#define SWAP_MANUFACT_ID        0x00000000L
 
 /**
- * Definition of custom getter/setter callback functions
+ * Product SWAP ID
  */
-const void updateDataTest(byte x){
-  dataTest[0]='1';
-  dataTest[1]='2';
-  dataTest[2]='3';
-  swap.getRegister(REGI_DATATEST)->getData();
-}
+#define SWAP_PRODUCT_ID         0x00000000L
+
+#endif
+

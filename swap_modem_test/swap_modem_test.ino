@@ -26,21 +26,33 @@
  
 #include "regtable.h"
 #include "swap.h"
-#include "swcommand.h"
+#include "HardwareSerial.h"
+#include "swquery.h"
 
-#define RFCHANNEL  0  //canal de comunicacion
-#define SYNCWORD1  0xB5 // palabra de seguridad uno
-#define SYNCWORD0 0x47  //palabra de seguridad dos
-#define SOURCE_ADDR 5   //Direccion del dispositivo
-
-
-byte value[]={'A','B'};
-SWCOMMAND com = SWCOMMAND(4,0,4,11,value,sizeof(value));
 /**
  * setup
  *
  * Arduino setup function
  */
+#define RFCHANNEL 0 
+#define SYNCWORD1 0xB5
+#define SYNCWORD0 0x47
+#define SOURCE_ADDR 4
+
+SWQUERY query = SWQUERY(5,5,11);
+
+
+
+void swapStatusReceived(SWPACKET *status){
+  byte i; 
+  Serial.println("i just got this:");
+  Serial.println("");
+  for(i = 0; i<sizeof(status->value.data);i++){
+    Serial.print(status->value.data[i]);
+    Serial.print("-");
+  }
+}
+
 void setup()
 {
   
@@ -49,16 +61,26 @@ void setup()
   panstamp.radio.setDevAddress(SOURCE_ADDR); // le damos una direccion local al dispositivo
   panstamp.radio.setCCregs();  // registramos las credenciales
   panstamp.setHighTxPower(); // aumentamos la potencia de transmision
+  
+  
   // Init SWAP stack
   swap.init();
+  
+  // incicializamos el serial 
+  Serial.begin(38400);
+  Serial.println("");
+  
+  // avisamos que el moden se encuentra listo
+  Serial.println("Receiver is Ready!");
+  
+  swap.attachInterrupt(STATUS, swapStatusReceived);
   
   // Transmit product code
   swap.getRegister(REGI_PRODUCTCODE)->getData();
   
   pinMode(LED,OUTPUT);
-  digitalWrite(LED,LOW); 
+  digitalWrite(LED,LOW);
   
- 
 }
 
 /**
@@ -69,11 +91,9 @@ void setup()
 void loop()
 {
   digitalWrite(LED,HIGH);
-  //swap.getRegister(REGI_DATATEST)->getData();
-  com.send();
-  delay(500);
+  query.send();
+  Serial.println("i just sended a query");
+  delay(2200);
   digitalWrite(LED,LOW);
-  panstamp.sleepSec(5);
-   
 }
 
