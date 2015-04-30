@@ -35,7 +35,8 @@
 
 
 byte value[]={'A','B'};
-SWCOMMAND com = SWCOMMAND(4,0,4,11,value,sizeof(value));
+
+SWCOMMAND com = SWCOMMAND(0x04,0,0x04,11,value,sizeof(value));
 /**
  * setup
  *
@@ -44,12 +45,14 @@ SWCOMMAND com = SWCOMMAND(4,0,4,11,value,sizeof(value));
 void setup()
 {
   
-  panstamp.radio.setChannel(RFCHANNEL);  // asignamos el canal de transmision
-  panstamp.radio.setSyncWord(SYNCWORD1,SYNCWORD0); // configuramos las palabras clave
-  panstamp.radio.setDevAddress(SOURCE_ADDR); // le damos una direccion local al dispositivo
-  panstamp.radio.setCCregs();  // registramos las credenciales
-  panstamp.setHighTxPower(); // aumentamos la potencia de transmision
+  //panstamp.radio.setChannel(RFCHANNEL);  // asignamos el canal de transmision
+  //panstamp.radio.setSyncWord(SYNCWORD1,SYNCWORD0); // configuramos las palabras clave
+  //panstamp.radio.setDevAddress(SOURCE_ADDR); // le damos una direccion local al dispositivo
+  //panstamp.radio.setCCregs();  // registramos las credenciales
+  //panstamp.setHighTxPower(); // aumentamos la potencia de transmision
   // Init SWAP stack
+  
+  //swap.nvolatToFactoryDefaults();
   swap.init();
   
   // Transmit product code

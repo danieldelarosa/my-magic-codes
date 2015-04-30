@@ -39,7 +39,8 @@
 #define SYNCWORD0 0x47
 #define SOURCE_ADDR 4
 
-SWQUERY query = SWQUERY(5,5,11);
+SWQUERY query = SWQUERY(4,4,11);
+
 
 
 
@@ -56,15 +57,22 @@ void swapStatusReceived(SWPACKET *status){
 void setup()
 {
   
-  panstamp.radio.setChannel(RFCHANNEL);  // asignamos el canal de transmision
-  panstamp.radio.setSyncWord(SYNCWORD1,SYNCWORD0); // configuramos las palabras clave
-  panstamp.radio.setDevAddress(SOURCE_ADDR); // le damos una direccion local al dispositivo
-  panstamp.radio.setCCregs();  // registramos las credenciales
+  //panstamp.radio.setChannel(RFCHANNEL);  // asignamos el canal de transmision
+  //panstamp.radio.setSyncWord(SYNCWORD1,SYNCWORD0); // configuramos las palabras clave
+  //panstamp.radio.setDevAddress(SOURCE_ADDR); // le damos una direccion local al dispositivo
+  //panstamp.radio.setCCregs();  // registramos las credenciales
   panstamp.setHighTxPower(); // aumentamos la potencia de transmision
   
   
   // Init SWAP stack
+  
+  //swap.nvolatToFactoryDefaults();
   swap.init();
+  
+  swap.getRegister(REGI_PRODUCTCODE)->getData();
+  
+  //byte addr[] = {0x04};
+  //swap.getRegister(REGI_DEVADDRESS)->setData(addr);
   
   // incicializamos el serial 
   Serial.begin(38400);
@@ -75,8 +83,7 @@ void setup()
   
   swap.attachInterrupt(STATUS, swapStatusReceived);
   
-  // Transmit product code
-  swap.getRegister(REGI_PRODUCTCODE)->getData();
+  
   
   pinMode(LED,OUTPUT);
   digitalWrite(LED,LOW);
@@ -91,9 +98,13 @@ void setup()
 void loop()
 {
   digitalWrite(LED,HIGH);
-  query.send();
-  Serial.println("i just sended a query");
-  delay(2200);
+  //query.send();
+  //Serial.println("i just sended a query");
+  // Transmit product code
+  
+  //query.send();
   digitalWrite(LED,LOW);
+  delay(1000);
+  
 }
 
